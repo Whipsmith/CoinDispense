@@ -21,6 +21,10 @@
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
+        <activity
+            android:name=".dispense.DispenseActivity"
+            android:label="@string/title_activity_dispense" >
+        </activity>
     </application>
 
 </manifest>
