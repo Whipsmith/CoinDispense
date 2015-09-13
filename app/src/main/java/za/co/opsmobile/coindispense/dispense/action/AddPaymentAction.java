@@ -19,4 +19,20 @@ public class AddPaymentAction implements StoreAction<DispenseStoreActions> {
     public void executeAction(DispenseStoreActions store) {
         store.addPayment(denomination);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AddPaymentAction that = (AddPaymentAction) o;
+
+        return denomination.equals(that.denomination);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return denomination.hashCode();
+    }
 }

@@ -2,6 +2,7 @@ package za.co.opsmobile.coindispense.framework.dipatcher;
 
 import de.greenrobot.event.EventBus;
 import za.co.opsmobile.coindispense.framework.action.StoreActionEvent;
+import za.co.opsmobile.coindispense.framework.logging.CoinDispenseError;
 import za.co.opsmobile.coindispense.framework.store.Store;
 
 /**
@@ -18,12 +19,12 @@ public class Dispatcher {
         this.bus = bus;
     }
 
-    public void emitChange(Store.StoreChangedEvent storeChangedEvent) {
-        bus.post(storeChangedEvent);
+    public void emitChange(Store.StoreModelChangedEvent storeModelChangedEvent) {
+        bus.post(storeModelChangedEvent);
     }
 
-    public void emitError(Store.StoreErrorEvent storeErrorEvent) {
-        bus.post(storeErrorEvent);
+    public void emitError(CoinDispenseError error) {
+        bus.post(error);
     }
 
     public void dispatchAction(StoreActionEvent storeActionEvent) {

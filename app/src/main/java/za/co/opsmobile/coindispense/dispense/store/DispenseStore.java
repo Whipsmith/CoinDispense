@@ -1,9 +1,12 @@
 package za.co.opsmobile.coindispense.dispense.store;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import za.co.opsmobile.coindispense.dispense.action.DispenseStoreActionEvent;
 import za.co.opsmobile.coindispense.framework.dipatcher.Dispatcher;
+import za.co.opsmobile.coindispense.framework.logging.ModelError;
 import za.co.opsmobile.coindispense.framework.store.Store;
 
 /**
@@ -13,39 +16,47 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
 
     private HashMap<Denomination, Integer> payments;
     private PaymentTransaction change;
+    private Float cost;
 
-    public DispenseStore(Dispatcher dispatcher, Denomination[] validDenominations) {
+    public DispenseStore(Dispatcher dispatcher) {
         super(dispatcher);
-        initPayments(validDenominations);
-    }
-
-    private void initPayments(Denomination[] validDenominations) {
-        payments = new HashMap<>(validDenominations.length);
-        for (Denomination denomination : validDenominations) {
-            payments.put(denomination, 0);
-        }
     }
 
     public void onEventBackgroundThread(DispenseStoreActionEvent event) {
         event.performAction(this);
+    }
+
+    @Override
+    public void initialise(Denomination[] validDenominations) {
+        payments = new HashMap<>(validDenominations.length);
+        change = null;
+        for (Denomination denomination : validDenominations) {
+            payments.put(denomination, 0);
+        }
         emitStoreChanged();
     }
 
     @Override
-    protected StoreChangedEvent getStoreChangedEvent() {
+    protected StoreModelChangedEvent getStoreChangedEvent() {
         return new DispenseModelChangedEvent();
     }
 
     @Override
-    protected StoreErrorEvent getStoreErrorEvent(String errorMessage) {
-        return new DispenseStoreErrorEvent(errorMessage);
+    protected ModelError getStoreErrorEvent(Throwable cause) {
+        return new DispenseModelError(cause);
+    }
+
+    @Override
+    protected ModelError getStoreErrorEvent(String errorMessage) {
+        return new DispenseModelError(errorMessage);
     }
 
     @Override
     public void addPayment(Denomination denomination) {
-        if (payments.containsKey(denomination)) {
+        if (payments != null && payments.containsKey(denomination)) {
             payments.put(denomination, payments.get(denomination) + 1);
             change = null;
+            emitStoreChanged();
         } else {
             emitStoreError("The rand note value is incorrect");
         }
@@ -53,23 +64,41 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
 
     @Override
     public void setChange(PaymentTransaction changeTransaction) {
-        change = changeTransaction;
+        if (!this.change.equals(changeTransaction)) {
+            change = changeTransaction;
+            emitStoreChanged();
+        }
+    }
+
+    @Override
+    public void setCost(float cost) {
+        if (this.cost == null || this.cost != cost) {
+            this.cost = cost;
+            emitStoreChanged();
+        }
     }
 
     @Override
     public PaymentTransaction getPayments() {
-        return new PaymentTransaction.Builder(payments).build();
+        return new PaymentTransaction(payments);
     }
 
     @Override
     public PaymentTransaction getChange() {
-        return null;
+        return change;
     }
 
-    public class DispenseStoreErrorEvent extends StoreErrorEvent {
-        public DispenseStoreErrorEvent(String errorMessage) {
-            super(errorMessage);
+    @Override
+    public ArrayList<Denomination> getValidDenominations() {
+        if (payments == null || payments.size() == 0) {
+            return null;
         }
+        return new ArrayList<>(payments.keySet());
+    }
+
+    @Override
+    public Float getCost() {
+        return cost;
     }
 
 }
