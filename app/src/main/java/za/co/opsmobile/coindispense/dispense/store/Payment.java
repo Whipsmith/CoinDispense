@@ -20,7 +20,7 @@ public class Payment implements Parcelable {
         return denomination;
     }
 
-    public double getValue() {
+    public float getValue() {
         return denomination.getValue(count);
     }
 

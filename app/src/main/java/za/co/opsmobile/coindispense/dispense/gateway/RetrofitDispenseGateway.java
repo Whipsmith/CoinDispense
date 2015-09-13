@@ -5,8 +5,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import retrofit.Callback;
+import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+import za.co.opsmobile.coindispense.CalculateChangeRequest;
 import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
 import za.co.opsmobile.coindispense.dispense.store.Denomination;
 import za.co.opsmobile.coindispense.dispense.store.Payment;
@@ -19,10 +21,11 @@ import za.co.opsmobile.coindispense.framework.logging.GatewayError;
 public class RetrofitDispenseGateway implements DispenseGateway {
     private final DispenseService dispenseService;
 
-    public RetrofitDispenseGateway() {
+    public RetrofitDispenseGateway(String restUrl) {
         Retrofit retrofit = new Retrofit.Builder()
                 .callbackExecutor(Executors.newSingleThreadExecutor())
-                .baseUrl("")
+                .baseUrl(restUrl)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         dispenseService = retrofit.create(DispenseService.class);
     }
@@ -30,7 +33,11 @@ public class RetrofitDispenseGateway implements DispenseGateway {
 
     @Override
     public void calculateChange(PaymentTransaction transaction, final DispenseActionCreator dispenseActionCreator) {
-        dispenseService.calculateChange(transaction, new Callback<PaymentTransaction>() {
+
+
+        CalculateChangeRequest request = new CalculateChangeRequest();
+        request.setCost(transaction.getValue());
+        dispenseService.calculateChange(request, new Callback<PaymentTransaction>() {
             @Override
             public void onResponse(Response<PaymentTransaction> response) {
                 dispenseActionCreator.onChangeCalculated(response.body());

@@ -25,17 +25,18 @@ android {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
 
+    compile project(':model')
 
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:2.4'

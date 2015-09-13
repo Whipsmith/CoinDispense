@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,7 +57,7 @@ public class DispenseActivity extends AppCompatActivity {
 
     private void initDependencies() {
         dispatcher = Dispatcher.getDefault();
-        actionCreator = ActionCreatorFactory.getDispenseActionCreator(dispatcher);
+        actionCreator = ActionCreatorFactory.getDispenseActionCreator(dispatcher, getApplicationContext());
         model = ModelFactory.get(dispatcher).getDispenseModel();
     }
 

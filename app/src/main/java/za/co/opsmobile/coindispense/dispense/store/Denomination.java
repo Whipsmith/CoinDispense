@@ -21,7 +21,7 @@ public class Denomination implements Parcelable {
         this.currencyType = currencyType;
     }
 
-    public double getValue(int count) {
+    public float getValue(int count) {
         return value * count;
     }
 
@@ -38,18 +38,15 @@ public class Denomination implements Parcelable {
 
         Denomination that = (Denomination) o;
 
-        if (Double.compare(that.value, value) != 0) return false;
+        if (Float.compare(that.value, value) != 0) return false;
         return currencyType == that.currencyType;
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(value);
-        result = (int) (temp ^ (temp >>> 32));
-        result = 31 * result + currencyType.hashCode();
+        int result = (value != +0.0f ? Float.floatToIntBits(value) : 0);
+        result = 31 * result + (currencyType != null ? currencyType.hashCode() : 0);
         return result;
     }
 

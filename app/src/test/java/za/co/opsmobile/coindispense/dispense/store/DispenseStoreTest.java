@@ -65,7 +65,7 @@ public class DispenseStoreTest {
 
         storeUnderTest.addPayment(validDenomination);
         PaymentTransaction payments = storeUnderTest.getPayments();
-        double expectedValue = validDenomination.getValue(1);
+        float expectedValue = validDenomination.getValue(1);
 
         assertEquals(expectedValue, payments.getValue(), 0.001);
     }

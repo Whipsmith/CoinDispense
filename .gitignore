@@ -1,3 +1,5 @@
+/model/build
+/backend/build
 /.idea
 /.idea/misc.xml
 .gradle

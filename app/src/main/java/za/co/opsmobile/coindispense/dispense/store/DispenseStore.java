@@ -64,7 +64,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
 
     @Override
     public void setChange(PaymentTransaction changeTransaction) {
-        if (!this.change.equals(changeTransaction)) {
+        if (this.change == null || !this.change.equals(changeTransaction)) {
             change = changeTransaction;
             emitStoreChanged();
         }

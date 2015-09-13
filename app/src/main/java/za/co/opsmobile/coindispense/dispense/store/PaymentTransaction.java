@@ -32,12 +32,12 @@ public class PaymentTransaction implements Parcelable {
         return payments;
     }
 
-    public double getValue() {
+    public float getValue() {
         return sumPayments();
     }
 
-    private double sumPayments() {
-        double total = 0;
+    private float sumPayments() {
+        float total = 0;
         for (Payment payment : payments) {
             total += payment.getValue();
         }
