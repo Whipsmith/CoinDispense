@@ -25,6 +25,11 @@ dependencies {
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
     compile 'javax.servlet:servlet-api:2.5'
     compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.0.2.RELEASE'
+    compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
+    compile 'org.springframework.security:spring-security-taglibs:4.0.2.RELEASE'
+    compile 'org.springframework.security:spring-security-core:4.0.2.RELEASE'
+
     compile project(':model')
 
     testCompile project(':model')

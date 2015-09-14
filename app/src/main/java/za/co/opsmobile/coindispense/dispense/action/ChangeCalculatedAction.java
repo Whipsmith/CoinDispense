@@ -1,16 +1,17 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
+import java.util.HashMap;
+
 import za.co.opsmobile.coindispense.dispense.store.DispenseStoreActions;
-import za.co.opsmobile.coindispense.dispense.store.PaymentTransaction;
 import za.co.opsmobile.coindispense.framework.action.StoreAction;
 
 /**
  * Created by Daniel Oosthuizen on 2015/09/06.
  */
 public class ChangeCalculatedAction implements StoreAction<DispenseStoreActions> {
-    private final PaymentTransaction change;
+    private final HashMap<Float, Integer> change;
 
-    public ChangeCalculatedAction(PaymentTransaction change) {
+    public ChangeCalculatedAction(HashMap<Float, Integer> change) {
         this.change = change;
     }
 

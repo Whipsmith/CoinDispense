@@ -1,6 +1,5 @@
 package za.co.opsmobile.coindispense.factory;
 
-import za.co.opsmobile.coindispense.dispense.store.Denomination;
 import za.co.opsmobile.coindispense.dispense.store.DispenseModel;
 import za.co.opsmobile.coindispense.dispense.store.DispenseStore;
 import za.co.opsmobile.coindispense.framework.dipatcher.Dispatcher;
@@ -19,7 +18,6 @@ public class ModelFactory {
 
         return instance;
     }
-
 
 
     private ModelFactory(DispenseModel dispenseModel) {

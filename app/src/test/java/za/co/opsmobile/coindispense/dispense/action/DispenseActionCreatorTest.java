@@ -54,36 +54,36 @@ public class DispenseActionCreatorTest {
     }
 
     @Test
-    public void testInitialiseValidDenominations(){
+    public void testInitialiseValidDenominations() {
         actionCreatorUnderTest.initialiseValidDenominations();
         verify(configurationGateway).getValidDenominations(actionCreatorUnderTest);
     }
 
     @Test
-    public void testOnValidDenominationsFetched(){
-        Denomination[] validDenominations = new Denomination[0];
+    public void testOnValidDenominationsFetched() {
+        Float[] validDenominations = new Denomination[0];
         actionCreatorUnderTest.onValidDenominationsFetched(validDenominations);
         StoreActionEvent expectedActionEvent = new DispenseStoreActionEvent(new ValidDenominationsFetchedAction(validDenominations));
         verify(mockDispatcher).dispatchAction(expectedActionEvent);
     }
 
     @Test
-    public void testAddPayment(){
-        Denomination denomination = new Denomination(10f, Denomination.CurrencyTypes.NOTE);
+    public void testAddPayment() {
+        Float denomination = new Float(10f, Float.CurrencyTypes.NOTE);
         actionCreatorUnderTest.addPayment(denomination);
         StoreActionEvent expectedActionEvent = new DispenseStoreActionEvent(new AddPaymentAction(denomination));
         verify(mockDispatcher).dispatchAction(expectedActionEvent);
     }
 
     @Test
-    public void testCalculateChange(){
+    public void testCalculateChange() {
         ArrayList<Payment> payments = new ArrayList<>();
         actionCreatorUnderTest.calculateChange(payments);
         verify(dispenseGateway).calculateChange(new PaymentTransaction(payments), actionCreatorUnderTest);
     }
 
     @Test
-    public void testOnChangeCalculated(){
+    public void testOnChangeCalculated() {
         PaymentTransaction change = new PaymentTransaction(new ArrayList<Payment>());
         actionCreatorUnderTest.onChangeCalculated(change);
         StoreActionEvent expectedAction = new DispenseStoreActionEvent(new ChangeCalculatedAction(change));
@@ -91,7 +91,7 @@ public class DispenseActionCreatorTest {
     }
 
     @Test
-    public void testSendError(){
+    public void testSendError() {
         CoinDispenseError error = new DispenseModelError("");
         actionCreatorUnderTest.sendError(error);
         verify(mockDispatcher).emitError(error);

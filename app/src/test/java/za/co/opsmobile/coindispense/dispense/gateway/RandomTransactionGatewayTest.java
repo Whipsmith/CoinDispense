@@ -5,11 +5,10 @@ import org.mockito.ArgumentCaptor;
 
 import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by Daniel Oosthuizen on 2015/09/07.

@@ -3,7 +3,7 @@ package za.co.opsmobile.coindispense.framework.logging;
 /**
  * Created by Daniel Oosthuizen on 2015/09/06.
  */
-public abstract class GatewayError extends CoinDispenseError{
+public abstract class GatewayError extends CoinDispenseError {
 
     public GatewayError(String detailMessage) {
         super(detailMessage);

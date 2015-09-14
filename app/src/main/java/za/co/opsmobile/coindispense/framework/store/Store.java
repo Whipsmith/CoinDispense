@@ -32,6 +32,7 @@ public abstract class Store {
 
     protected abstract ModelError getStoreErrorEvent(String errorMessage);
 
-    public interface StoreModelChangedEvent {}
+    public interface StoreModelChangedEvent {
+    }
 
 }

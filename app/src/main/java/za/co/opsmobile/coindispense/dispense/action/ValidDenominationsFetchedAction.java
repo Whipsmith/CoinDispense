@@ -2,7 +2,6 @@ package za.co.opsmobile.coindispense.dispense.action;
 
 import java.util.Arrays;
 
-import za.co.opsmobile.coindispense.dispense.store.Denomination;
 import za.co.opsmobile.coindispense.dispense.store.DispenseStoreActions;
 import za.co.opsmobile.coindispense.framework.action.StoreAction;
 
@@ -10,9 +9,9 @@ import za.co.opsmobile.coindispense.framework.action.StoreAction;
  * Created by Daniel Oosthuizen on 2015/09/06.
  */
 public class ValidDenominationsFetchedAction implements StoreAction<DispenseStoreActions> {
-    private final Denomination[] validDenominations;
+    private final Float[] validDenominations;
 
-    public ValidDenominationsFetchedAction(Denomination[] validDenominations) {
+    public ValidDenominationsFetchedAction(Float[] validDenominations) {
         this.validDenominations = validDenominations;
     }
 

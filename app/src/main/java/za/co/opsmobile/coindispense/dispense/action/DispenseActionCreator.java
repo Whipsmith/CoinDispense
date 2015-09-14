@@ -1,15 +1,13 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import za.co.opsmobile.coindispense.dispense.gateway.ConfigurationGateway;
 import za.co.opsmobile.coindispense.dispense.gateway.DispenseGateway;
-import za.co.opsmobile.coindispense.dispense.gateway.RetrofitDispenseGateway;
 import za.co.opsmobile.coindispense.dispense.gateway.TransactionGateway;
-import za.co.opsmobile.coindispense.dispense.store.Denomination;
 import za.co.opsmobile.coindispense.dispense.store.Payment;
 import za.co.opsmobile.coindispense.dispense.store.PaymentTransaction;
-import za.co.opsmobile.coindispense.factory.GatewayFactory;
 import za.co.opsmobile.coindispense.framework.dipatcher.Dispatcher;
 import za.co.opsmobile.coindispense.framework.logging.CoinDispenseError;
 
@@ -43,22 +41,22 @@ public class DispenseActionCreator {
         configurationGateway.getValidDenominations(this);
     }
 
-    public void onValidDenominationsFetched(Denomination[] validDenominations) {
+    public void onValidDenominationsFetched(Float[] validDenominations) {
         ValidDenominationsFetchedAction validDenominationsFetchedAction = new ValidDenominationsFetchedAction(validDenominations);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(validDenominationsFetchedAction));
     }
 
-    public void addPayment(Denomination denomination) {
+    public void addPayment(Float denomination) {
         AddPaymentAction addPaymentAction = new AddPaymentAction(denomination);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(addPaymentAction));
     }
 
-    public void calculateChange(ArrayList<Payment> payments) {
+    public void calculateChange(ArrayList<Payment> payments, Float cost) {
         PaymentTransaction changeTransaction = new PaymentTransaction(payments);
-        dispenseGateway.calculateChange(changeTransaction, this);
+        dispenseGateway.calculateChange(changeTransaction, cost, this);
     }
 
-    public void onChangeCalculated(PaymentTransaction change) {
+    public void onChangeCalculated(HashMap<Float, Integer> change) {
         ChangeCalculatedAction changeCalculatedAction = new ChangeCalculatedAction(change);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(changeCalculatedAction));
     }

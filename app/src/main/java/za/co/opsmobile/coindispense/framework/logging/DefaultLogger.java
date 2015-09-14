@@ -14,8 +14,8 @@ public class DefaultLogger implements CoinDispenseLogger {
     private String getLogString(CoinDispenseError error) {
         String newLine = "\n";
         StringBuilder sb = new StringBuilder(error.getUserMessage())
-        .append(newLine)
-        .append(String.format("Cause: [%s]", error.getCause().getMessage()));
+                .append(newLine)
+                .append(String.format("Cause: [%s]", error.getCause().getMessage()));
         return sb.toString();
     }
 }

@@ -8,17 +8,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import za.co.opsmobile.coindispense.R;
 import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
-import za.co.opsmobile.coindispense.dispense.store.Denomination;
 import za.co.opsmobile.coindispense.dispense.store.DispenseModel;
 import za.co.opsmobile.coindispense.dispense.store.DispenseModelChangedEvent;
+import za.co.opsmobile.coindispense.dispense.store.Payment;
 import za.co.opsmobile.coindispense.dispense.store.PaymentTransaction;
 import za.co.opsmobile.coindispense.dispense.view.adapter.PaymentOptionsAdapter;
 import za.co.opsmobile.coindispense.factory.ActionCreatorFactory;
@@ -37,12 +40,17 @@ public class DispenseActivity extends AppCompatActivity {
     RecyclerView paymentOptions;
     @Bind(R.id.snackbarPosition)
     CoordinatorLayout snackbarPosition;
+    @Bind(R.id.pay_button)
+    Button payButton;
 
 
     private DispenseModel model;
     private DispenseActionCreator actionCreator;
     private Dispatcher dispatcher;
     private PaymentOptionsAdapter paymentOptionsAdapter;
+    private final DecimalFormat format = new DecimalFormat("R ##0.00");
+    private Float cost;
+    private ArrayList<Payment> payments;
 
 
     @Override
@@ -51,7 +59,7 @@ public class DispenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dispense);
         ButterKnife.bind(this);
         initDependencies();
-        paymentOptionsAdapter = new PaymentOptionsAdapter(new ArrayList<Denomination>());
+        paymentOptionsAdapter = new PaymentOptionsAdapter(new ArrayList<Float>(), actionCreator);
         paymentOptions.setAdapter(paymentOptionsAdapter);
     }
 
@@ -74,7 +82,7 @@ public class DispenseActivity extends AppCompatActivity {
             return;
         }
 
-        ArrayList<Denomination> validDenominations = model.getValidDenominations();
+        ArrayList<Float> validDenominations = model.getValidDenominations();
         if (validDenominations == null) {
             actionCreator.initialiseValidDenominations();
             return;
@@ -101,16 +109,25 @@ public class DispenseActivity extends AppCompatActivity {
         startActivity(resultIntent);
     }
 
-    private void setValidDenominations(ArrayList<Denomination> validDenominations) {
+    private void setValidDenominations(ArrayList<Float> validDenominations) {
         paymentOptionsAdapter.setPaymentOptions(validDenominations);
     }
 
     private void setCost(Float cost) {
-
+        this.cost = cost;
+        priceView.setText(format.format(cost));
     }
 
     private void setPayments(PaymentTransaction payments) {
-
+        this.payments = payments.getPayments();
+        if (payments.getValue() >= cost) {
+            payButton.setEnabled(true);
+            paymentTotalView.setTextColor(getResources().getColor(R.color.green));
+        } else {
+            payButton.setEnabled(false);
+            paymentTotalView.setTextColor(getResources().getColor(R.color.red));
+        }
+        paymentTotalView.setText(format.format(payments.getValue()));
     }
 
     public void onEventMainThread(DispenseModelChangedEvent dispenseModelChangedEvent) {
@@ -124,6 +141,11 @@ public class DispenseActivity extends AppCompatActivity {
         if (userMessage != null) {
             displayError(userMessage);
         }
+    }
+
+    @OnClick(R.id.pay_button)
+    public void pay() {
+        actionCreator.calculateChange(payments, cost);
     }
 
     private void displayError(String userMessage) {

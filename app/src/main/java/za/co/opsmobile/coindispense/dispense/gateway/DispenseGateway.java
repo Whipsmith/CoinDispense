@@ -8,5 +8,5 @@ import za.co.opsmobile.coindispense.dispense.store.PaymentTransaction;
  */
 public interface DispenseGateway {
 
-    void calculateChange(PaymentTransaction transaction, DispenseActionCreator dispenseActionCreator);
+    void calculateChange(PaymentTransaction transaction, Float cost, DispenseActionCreator dispenseActionCreator);
 }

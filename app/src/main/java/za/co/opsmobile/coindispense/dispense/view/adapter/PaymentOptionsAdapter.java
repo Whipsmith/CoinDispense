@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 
 import za.co.opsmobile.coindispense.R;
-import za.co.opsmobile.coindispense.dispense.store.Denomination;
+import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
 import za.co.opsmobile.coindispense.dispense.view.PaymentOptionViewHolder;
 
 /**
@@ -19,43 +18,27 @@ import za.co.opsmobile.coindispense.dispense.view.PaymentOptionViewHolder;
  */
 public class PaymentOptionsAdapter extends RecyclerView.Adapter<PaymentOptionViewHolder> {
 
-    private ArrayList<Denomination> denominations;
-    private Comparator<? super Denomination> denominationComparator = new Comparator<Denomination>() {
-        @Override
-        public int compare(Denomination lhs, Denomination rhs) {
-            if (lhs.getValue(1) > rhs.getValue(1)) {
-                return 1;
-            }
-            if (lhs.getValue(1) == rhs.getValue(1)) {
-                return 0;
-            }
-            return -1;
-        }
-    };
+    private ArrayList<Float> denominations;
 
-    public PaymentOptionsAdapter(ArrayList<Denomination> denominations) {
+    private DispenseActionCreator actionCreator;
+
+    public PaymentOptionsAdapter(ArrayList<Float> denominations, DispenseActionCreator actionCreator) {
+        this.actionCreator = actionCreator;
         if (denominations.size() > 0) {
-            Collections.sort(denominations, denominationComparator);
+            Collections.sort(denominations);
         }
         this.denominations = denominations;
     }
 
     @Override
     public PaymentOptionViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Denomination.CurrencyTypes type = Denomination.CurrencyTypes.values()[viewType];
-        switch (type) {
-            case NOTE:
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.note_view, viewGroup, false);
-                break;
-            case COIN:
-                break;
-        }
-        return null;
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.denomination_view, viewGroup, false);
+        return new PaymentOptionViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(PaymentOptionViewHolder paymentOptionViewHolder, int position) {
-
+        paymentOptionViewHolder.bind(denominations.get(position), actionCreator);
     }
 
     @Override
@@ -63,13 +46,11 @@ public class PaymentOptionsAdapter extends RecyclerView.Adapter<PaymentOptionVie
         return denominations.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return denominations.get(position).getCurrencyType().ordinal();
-    }
 
-    public void setPaymentOptions(ArrayList<Denomination> validDenominations) {
-        Collections.sort(validDenominations, denominationComparator);
+    public void setPaymentOptions(ArrayList<Float> validDenominations) {
+        Comparator reverseComparator = Collections.reverseOrder();
+        Collections.sort(validDenominations, reverseComparator);
+
         this.denominations = validDenominations;
         notifyDataSetChanged();
     }

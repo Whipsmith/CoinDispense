@@ -9,19 +9,19 @@ import android.os.Parcelable;
 public class Payment implements Parcelable {
 
     private final int count;
-    private final Denomination denomination;
+    private final Float denomination;
 
-    public Payment(int count, Denomination denomination) {
+    public Payment(int count, Float denomination) {
         this.count = count;
         this.denomination = denomination;
     }
 
-    public Denomination getDenomination() {
+    public Float getDenomination() {
         return denomination;
     }
 
     public float getValue() {
-        return denomination.getValue(count);
+        return denomination * count;
     }
 
     @Override
@@ -51,15 +51,15 @@ public class Payment implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.count);
-        dest.writeParcelable(this.denomination, 0);
+        dest.writeValue(this.denomination);
     }
 
     protected Payment(Parcel in) {
         this.count = in.readInt();
-        this.denomination = in.readParcelable(Denomination.class.getClassLoader());
+        this.denomination = (Float) in.readValue(Float.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Payment> CREATOR = new Parcelable.Creator<Payment>() {
+    public static final Creator<Payment> CREATOR = new Creator<Payment>() {
         public Payment createFromParcel(Parcel source) {
             return new Payment(source);
         }

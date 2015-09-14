@@ -2,7 +2,6 @@ package za.co.opsmobile.coindispense.dispense.store;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import za.co.opsmobile.coindispense.dispense.action.DispenseStoreActionEvent;
 import za.co.opsmobile.coindispense.framework.dipatcher.Dispatcher;
@@ -14,7 +13,7 @@ import za.co.opsmobile.coindispense.framework.store.Store;
  */
 public class DispenseStore extends Store implements DispenseStoreActions, DispenseModel {
 
-    private HashMap<Denomination, Integer> payments;
+    private HashMap<Float, Integer> payments;
     private PaymentTransaction change;
     private Float cost;
 
@@ -27,10 +26,10 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public void initialise(Denomination[] validDenominations) {
+    public void initialise(Float[] validDenominations) {
         payments = new HashMap<>(validDenominations.length);
         change = null;
-        for (Denomination denomination : validDenominations) {
+        for (Float denomination : validDenominations) {
             payments.put(denomination, 0);
         }
         emitStoreChanged();
@@ -52,7 +51,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public void addPayment(Denomination denomination) {
+    public void addPayment(Float denomination) {
         if (payments != null && payments.containsKey(denomination)) {
             payments.put(denomination, payments.get(denomination) + 1);
             change = null;
@@ -63,7 +62,16 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public void setChange(PaymentTransaction changeTransaction) {
+    public void setChange(HashMap<Float, Integer> transactions) {
+
+        ArrayList<Payment> paymentsArray = new ArrayList<>(transactions.size());
+        for (Float denominationValue : transactions.keySet()) {
+            Float denomination = new Float(denominationValue);
+            Payment payment = new Payment(transactions.get(denominationValue), denomination);
+            paymentsArray.add(payment);
+        }
+
+        PaymentTransaction changeTransaction = new PaymentTransaction(paymentsArray);
         if (this.change == null || !this.change.equals(changeTransaction)) {
             change = changeTransaction;
             emitStoreChanged();
@@ -89,7 +97,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public ArrayList<Denomination> getValidDenominations() {
+    public ArrayList<Float> getValidDenominations() {
         if (payments == null || payments.size() == 0) {
             return null;
         }

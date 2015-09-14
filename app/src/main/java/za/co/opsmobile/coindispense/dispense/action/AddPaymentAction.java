@@ -1,6 +1,5 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
-import za.co.opsmobile.coindispense.dispense.store.Denomination;
 import za.co.opsmobile.coindispense.dispense.store.DispenseStoreActions;
 import za.co.opsmobile.coindispense.framework.action.StoreAction;
 
@@ -9,9 +8,9 @@ import za.co.opsmobile.coindispense.framework.action.StoreAction;
  */
 public class AddPaymentAction implements StoreAction<DispenseStoreActions> {
 
-    private final Denomination denomination;
+    private final Float denomination;
 
-    public AddPaymentAction(Denomination denomination) {
+    public AddPaymentAction(Float denomination) {
         this.denomination = denomination;
     }
 

@@ -16,9 +16,9 @@ public class PaymentTransaction implements Parcelable {
         this.payments = payments;
     }
 
-    public PaymentTransaction(HashMap<Denomination, Integer> paymentSet) {
+    public PaymentTransaction(HashMap<Float, Integer> paymentSet) {
         this.payments = new ArrayList<>();
-        for (Denomination denomination : paymentSet.keySet()) {
+        for (Float denomination : paymentSet.keySet()) {
             Integer count = paymentSet.get(denomination);
             if (count.compareTo(0) > 0) {
                 payments.add(new Payment(count, denomination));
