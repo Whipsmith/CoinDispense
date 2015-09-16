@@ -25,7 +25,7 @@ public class DispenseController {
 
     @RequestMapping(value = "/calculateChange",method = RequestMethod.POST, headers = "Accept=application/json")
     public ChangeResult calculateChange(@RequestBody CalculateChangeRequest calculateChangeRequest) {
-        float change = calculateChangeRequest.getCost() - calculateChangeRequest.getPayment();
+        float change = calculateChangeRequest.getPayment() - calculateChangeRequest.getCost();
         return calculateDispense(change);
     }
 
