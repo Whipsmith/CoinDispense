@@ -68,4 +68,24 @@ public class Payment implements Parcelable {
             return new Payment[size];
         }
     };
+
+    public int getCount() {
+        return count;
+    }
+
+    public static class Comparator implements java.util.Comparator<Payment> {
+
+        @Override
+        public int compare(Payment lhs, Payment rhs) {
+            return ((Float)lhs.getValue()).compareTo(((Float)rhs.getValue()));
+        }
+    }
+
+    public static class ReverseComparator implements java.util.Comparator<Payment> {
+
+        @Override
+        public int compare(Payment lhs, Payment rhs) {
+            return ((Float)rhs.getValue()).compareTo(((Float)lhs.getValue()));
+        }
+    }
 }

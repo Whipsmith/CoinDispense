@@ -34,4 +34,25 @@ public class DispenseControllerTest {
 
         assertEquals(expected, actual, 0.01);
     }
+
+    @Test
+    public void exactChangeFor1rand5centsOn75cents() {
+        float cost = .75f;
+        float payment = 1.05f;
+        float expected = .3f;
+        DispenseController controllerUnderTest = new DispenseController();
+
+        CalculateChangeRequest request = new CalculateChangeRequest();
+        request.setCost(cost);
+        request.setPayment(payment);
+
+        float actual = 0f;
+        ChangeResult changeResult = controllerUnderTest.calculateChange(request);
+        HashMap<Float, Integer> payments = changeResult.getPayments();
+        for (Float key : payments.keySet()) {
+            actual += (key * payments.get(key));
+        }
+
+        assertEquals(expected, actual, 0.01);
+    }
 }

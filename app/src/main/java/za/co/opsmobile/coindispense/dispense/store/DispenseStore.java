@@ -1,5 +1,7 @@
 package za.co.opsmobile.coindispense.dispense.store;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -64,18 +66,30 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     @Override
     public void setChange(HashMap<Float, Integer> transactions) {
 
+        PaymentTransaction changeTransaction;
+        if (transactions == null) {
+            changeTransaction = null;
+        } else {
+            changeTransaction = getPaymentTransaction(transactions);
+        }
+
+
+        if (this.change == null || !this.change.equals(changeTransaction)) {
+            change = changeTransaction;
+            emitStoreChanged();
+        }
+
+    }
+
+    @NonNull
+    private PaymentTransaction getPaymentTransaction(HashMap<Float, Integer> transactions) {
         ArrayList<Payment> paymentsArray = new ArrayList<>(transactions.size());
         for (Float denominationValue : transactions.keySet()) {
             Float denomination = new Float(denominationValue);
             Payment payment = new Payment(transactions.get(denominationValue), denomination);
             paymentsArray.add(payment);
         }
-
-        PaymentTransaction changeTransaction = new PaymentTransaction(paymentsArray);
-        if (this.change == null || !this.change.equals(changeTransaction)) {
-            change = changeTransaction;
-            emitStoreChanged();
-        }
+        return new PaymentTransaction(paymentsArray);
     }
 
     @Override

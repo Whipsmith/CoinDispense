@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout usernameInput;
     @Bind(R.id.passwordInput)
     TextInputLayout passwordInput;
+    @Bind(R.id.progress)
+    FrameLayout progress;
     private Dispatcher dispatcher;
     private LoginActionCreator actionCreator;
 
@@ -50,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = this.passwordInput.getEditText().getText().toString();
         if (valid(username, password)) {
             hideKeyboard();
+            setLoading(true);
             actionCreator.login(username, password);
         }
     }
@@ -81,8 +84,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(LoginStoreModelChangedEvent loginStoreModelChangedEvent) {
+        setLoading(false);
         Intent dispenseIntent = new Intent(this, DispenseActivity.class);
         startActivity(dispenseIntent);
+    }
+
+    private void setLoading(boolean loading) {
+        progress.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
 

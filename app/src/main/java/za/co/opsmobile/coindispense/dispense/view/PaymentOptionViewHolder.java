@@ -1,5 +1,6 @@
 package za.co.opsmobile.coindispense.dispense.view;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +33,12 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
     public void bind(Float denomination, DispenseActionCreator actionCreator) {
         this.denomination = denomination;
         this.actionCreator = actionCreator;
+        DecimalFormat format = getDecimalFormat(denomination);
+
+        value.setText(format.format(denomination));
+    }
+
+    private DecimalFormat getDecimalFormat(float denomination) {
         DecimalFormat format = null;
         if (denomination >= 1) {
             format = new DecimalFormat("R ###");
@@ -41,8 +48,7 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
             format.setMinimumFractionDigits(2);
             format.setMaximumIntegerDigits(0);
         }
-
-        value.setText(format.format(denomination));
+        return format;
     }
 
     @OnClick(R.id.card)

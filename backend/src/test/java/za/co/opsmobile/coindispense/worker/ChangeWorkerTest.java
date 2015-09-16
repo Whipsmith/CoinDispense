@@ -62,4 +62,18 @@ public class ChangeWorkerTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void exactChangeFor30cents() {
+        ChangeWorker changeWorker = new ChangeWorker(denominations, .30f);
+
+        ChangeResult result = changeWorker.calculateChange();
+        HashMap<Float, Integer> actual = result.getPayments();
+
+        HashMap<Float, Integer> expected = new HashMap<>();
+        expected.put(.25f, 1);
+        expected.put(.05f, 1);
+
+        assertEquals(expected, actual);
+    }
 }
