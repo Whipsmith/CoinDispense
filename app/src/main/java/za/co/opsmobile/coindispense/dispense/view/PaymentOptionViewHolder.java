@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import butterknife.Bind;
@@ -22,7 +23,7 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.value)
     TextView value;
 
-    private Float denomination;
+    private BigDecimal denomination;
     private DispenseActionCreator actionCreator;
 
     public PaymentOptionViewHolder(View itemView) {
@@ -30,17 +31,17 @@ public class PaymentOptionViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Float denomination, DispenseActionCreator actionCreator) {
+    public void bind(BigDecimal denomination, DispenseActionCreator actionCreator) {
         this.denomination = denomination;
         this.actionCreator = actionCreator;
         DecimalFormat format = getDecimalFormat(denomination);
 
-        value.setText(format.format(denomination));
+        value.setText(format.format(denomination.floatValue()));
     }
 
-    private DecimalFormat getDecimalFormat(float denomination) {
+    private DecimalFormat getDecimalFormat(BigDecimal denomination) {
         DecimalFormat format = null;
-        if (denomination >= 1) {
+        if (denomination.compareTo(BigDecimal.ONE) >= 0) {
             format = new DecimalFormat("R ###");
         } else {
             format = new DecimalFormat("#.##c");

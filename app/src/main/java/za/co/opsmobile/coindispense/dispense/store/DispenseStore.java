@@ -2,6 +2,7 @@ package za.co.opsmobile.coindispense.dispense.store;
 
 import android.support.annotation.NonNull;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,9 +16,9 @@ import za.co.opsmobile.coindispense.framework.store.Store;
  */
 public class DispenseStore extends Store implements DispenseStoreActions, DispenseModel {
 
-    private HashMap<Float, Integer> payments;
+    private HashMap<BigDecimal, Integer> payments;
     private PaymentTransaction change;
-    private Float cost;
+    private BigDecimal cost;
 
     public DispenseStore(Dispatcher dispatcher) {
         super(dispatcher);
@@ -28,10 +29,10 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public void initialise(Float[] validDenominations) {
+    public void initialise(BigDecimal[] validDenominations) {
         payments = new HashMap<>(validDenominations.length);
         change = null;
-        for (Float denomination : validDenominations) {
+        for (BigDecimal denomination : validDenominations) {
             payments.put(denomination, 0);
         }
         emitStoreChanged();
@@ -53,7 +54,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public void addPayment(Float denomination) {
+    public void addPayment(BigDecimal denomination) {
         if (payments != null && payments.containsKey(denomination)) {
             payments.put(denomination, payments.get(denomination) + 1);
             change = null;
@@ -64,7 +65,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public void setChange(HashMap<Float, Integer> transactions) {
+    public void setChange(HashMap<BigDecimal, Integer> transactions) {
 
         PaymentTransaction changeTransaction;
         if (transactions == null) {
@@ -82,18 +83,17 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @NonNull
-    private PaymentTransaction getPaymentTransaction(HashMap<Float, Integer> transactions) {
+    private PaymentTransaction getPaymentTransaction(HashMap<BigDecimal, Integer> transactions) {
         ArrayList<Payment> paymentsArray = new ArrayList<>(transactions.size());
-        for (Float denominationValue : transactions.keySet()) {
-            Float denomination = new Float(denominationValue);
-            Payment payment = new Payment(transactions.get(denominationValue), denomination);
+        for (BigDecimal denominationValue : transactions.keySet()) {
+            Payment payment = new Payment(transactions.get(denominationValue), denominationValue);
             paymentsArray.add(payment);
         }
         return new PaymentTransaction(paymentsArray);
     }
 
     @Override
-    public void setCost(float cost) {
+    public void setCost(BigDecimal cost) {
         if (this.cost == null || this.cost != cost) {
             this.cost = cost;
             emitStoreChanged();
@@ -111,7 +111,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public ArrayList<Float> getValidDenominations() {
+    public ArrayList<BigDecimal> getValidDenominations() {
         if (payments == null || payments.size() == 0) {
             return null;
         }
@@ -119,7 +119,7 @@ public class DispenseStore extends Store implements DispenseStoreActions, Dispen
     }
 
     @Override
-    public Float getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 

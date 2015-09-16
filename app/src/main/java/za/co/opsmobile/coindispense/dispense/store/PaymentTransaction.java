@@ -3,6 +3,7 @@ package za.co.opsmobile.coindispense.dispense.store;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,9 +17,9 @@ public class PaymentTransaction implements Parcelable {
         this.payments = payments;
     }
 
-    public PaymentTransaction(HashMap<Float, Integer> paymentSet) {
+    public PaymentTransaction(HashMap<BigDecimal, Integer> paymentSet) {
         this.payments = new ArrayList<>();
-        for (Float denomination : paymentSet.keySet()) {
+        for (BigDecimal denomination : paymentSet.keySet()) {
             Integer count = paymentSet.get(denomination);
             if (count.compareTo(0) > 0) {
                 payments.add(new Payment(count, denomination));
@@ -32,14 +33,14 @@ public class PaymentTransaction implements Parcelable {
         return payments;
     }
 
-    public float getValue() {
+    public BigDecimal getValue() {
         return sumPayments();
     }
 
-    private float sumPayments() {
-        float total = 0;
+    private BigDecimal sumPayments() {
+        BigDecimal total = BigDecimal.ZERO;
         for (Payment payment : payments) {
-            total += payment.getValue();
+            total = total.add(payment.getValue());
         }
         return total;
     }

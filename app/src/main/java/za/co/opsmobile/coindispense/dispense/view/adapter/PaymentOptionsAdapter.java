@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,11 +19,11 @@ import za.co.opsmobile.coindispense.dispense.view.PaymentOptionViewHolder;
  */
 public class PaymentOptionsAdapter extends RecyclerView.Adapter<PaymentOptionViewHolder> {
 
-    private ArrayList<Float> denominations;
+    private ArrayList<BigDecimal> denominations;
 
     private DispenseActionCreator actionCreator;
 
-    public PaymentOptionsAdapter(ArrayList<Float> denominations, DispenseActionCreator actionCreator) {
+    public PaymentOptionsAdapter(ArrayList<BigDecimal> denominations, DispenseActionCreator actionCreator) {
         this.actionCreator = actionCreator;
         if (denominations.size() > 0) {
             Collections.sort(denominations);
@@ -47,7 +48,7 @@ public class PaymentOptionsAdapter extends RecyclerView.Adapter<PaymentOptionVie
     }
 
 
-    public void setPaymentOptions(ArrayList<Float> validDenominations) {
+    public void setPaymentOptions(ArrayList<BigDecimal> validDenominations) {
         Comparator reverseComparator = Collections.reverseOrder();
         Collections.sort(validDenominations, reverseComparator);
 

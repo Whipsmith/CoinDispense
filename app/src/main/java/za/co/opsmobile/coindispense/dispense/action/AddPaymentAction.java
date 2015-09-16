@@ -1,5 +1,7 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
+import java.math.BigDecimal;
+
 import za.co.opsmobile.coindispense.dispense.store.DispenseStoreActions;
 import za.co.opsmobile.coindispense.framework.action.StoreAction;
 
@@ -8,9 +10,9 @@ import za.co.opsmobile.coindispense.framework.action.StoreAction;
  */
 public class AddPaymentAction implements StoreAction<DispenseStoreActions> {
 
-    private final Float denomination;
+    private final BigDecimal denomination;
 
-    public AddPaymentAction(Float denomination) {
+    public AddPaymentAction(BigDecimal denomination) {
         this.denomination = denomination;
     }
 

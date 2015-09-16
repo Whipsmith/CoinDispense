@@ -1,5 +1,6 @@
 package za.co.opsmobile.coindispense.dispense.store;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,7 @@ public interface DispenseModel {
 
     PaymentTransaction getChange();
 
-    ArrayList<Float> getValidDenominations();
+    ArrayList<BigDecimal> getValidDenominations();
 
-    Float getCost();
+    BigDecimal getCost();
 }

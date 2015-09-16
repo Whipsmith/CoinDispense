@@ -3,25 +3,27 @@ package za.co.opsmobile.coindispense.dispense.store;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Daniel Oosthuizen on 2015/09/05.
  */
 public class Payment implements Parcelable {
 
     private final int count;
-    private final Float denomination;
+    private final BigDecimal denomination;
 
-    public Payment(int count, Float denomination) {
+    public Payment(int count, BigDecimal denomination) {
         this.count = count;
         this.denomination = denomination;
     }
 
-    public Float getDenomination() {
+    public BigDecimal getDenomination() {
         return denomination;
     }
 
-    public float getValue() {
-        return denomination * count;
+    public BigDecimal getValue() {
+        return denomination.multiply(BigDecimal.valueOf(count));
     }
 
     @Override
@@ -56,7 +58,7 @@ public class Payment implements Parcelable {
 
     protected Payment(Parcel in) {
         this.count = in.readInt();
-        this.denomination = (Float) in.readValue(Float.class.getClassLoader());
+        this.denomination = (BigDecimal) in.readValue(BigDecimal.class.getClassLoader());
     }
 
     public static final Creator<Payment> CREATOR = new Creator<Payment>() {
@@ -77,7 +79,7 @@ public class Payment implements Parcelable {
 
         @Override
         public int compare(Payment lhs, Payment rhs) {
-            return ((Float)lhs.getValue()).compareTo(((Float)rhs.getValue()));
+            return lhs.getValue().compareTo(rhs.getValue());
         }
     }
 
@@ -85,7 +87,7 @@ public class Payment implements Parcelable {
 
         @Override
         public int compare(Payment lhs, Payment rhs) {
-            return ((Float)rhs.getValue()).compareTo(((Float)lhs.getValue()));
+            return rhs.getValue().compareTo(lhs.getValue());
         }
     }
 }

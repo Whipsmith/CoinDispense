@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class DispenseResultActivity extends AppCompatActivity {
         if (change == null) {
             supportFinishAfterTransition();
         }
-        randFormat = new DecimalFormat("R ###");
+        randFormat = new DecimalFormat("R ###.00");
         centFormat = new DecimalFormat("#.##c");
         centFormat.setMaximumFractionDigits(2);
         centFormat.setMinimumFractionDigits(2);
@@ -68,8 +69,8 @@ public class DispenseResultActivity extends AppCompatActivity {
         Collections.sort(paymentList, new Payment.ReverseComparator());
 
         for (Payment payment : paymentList) {
-            Float denomination = payment.getDenomination();
-            String denominationString = getDecimalFormat(denomination).format(denomination);
+            BigDecimal denomination = payment.getDenomination();
+            String denominationString = getDecimalFormat(denomination).format(denomination.doubleValue());
             String paymentString = String.format("%d x %s", payment.getCount(), denominationString);
             sb.append(paymentString)
                     .append(System.lineSeparator());
@@ -78,15 +79,15 @@ public class DispenseResultActivity extends AppCompatActivity {
         payments.setText(sb.toString());
     }
 
-    private DecimalFormat getDecimalFormat(float denomination) {
-        if (denomination >= 1) {
+    private DecimalFormat getDecimalFormat(BigDecimal denomination) {
+        if (denomination.compareTo(BigDecimal.ONE) >= 0) {
             return randFormat;
         } else {
             return centFormat;
         }
     }
 
-    private void setTotal(float value) {
+    private void setTotal(BigDecimal value) {
         total.setText(getDecimalFormat(value).format(value));
     }
 

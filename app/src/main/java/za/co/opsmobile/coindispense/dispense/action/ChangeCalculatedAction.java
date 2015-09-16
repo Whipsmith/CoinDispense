@@ -1,5 +1,6 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import za.co.opsmobile.coindispense.dispense.store.DispenseStoreActions;
@@ -9,9 +10,9 @@ import za.co.opsmobile.coindispense.framework.action.StoreAction;
  * Created by Daniel Oosthuizen on 2015/09/06.
  */
 public class ChangeCalculatedAction implements StoreAction<DispenseStoreActions> {
-    private final HashMap<Float, Integer> change;
+    private final HashMap<BigDecimal, Integer> change;
 
-    public ChangeCalculatedAction(HashMap<Float, Integer> change) {
+    public ChangeCalculatedAction(HashMap<BigDecimal, Integer> change) {
         this.change = change;
     }
 
@@ -27,12 +28,12 @@ public class ChangeCalculatedAction implements StoreAction<DispenseStoreActions>
 
         ChangeCalculatedAction that = (ChangeCalculatedAction) o;
 
-        return change.equals(that.change);
+        return !(change != null ? !change.equals(that.change) : that.change != null);
 
     }
 
     @Override
     public int hashCode() {
-        return change.hashCode();
+        return change != null ? change.hashCode() : 0;
     }
 }

@@ -1,5 +1,6 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,7 +33,7 @@ public class DispenseActionCreator {
         transactionGateway.getCost(this);
     }
 
-    public void onCostFetched(float cost) {
+    public void onCostFetched(BigDecimal cost) {
         CostFetchedAction costFetchedAction = new CostFetchedAction(cost);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(costFetchedAction));
     }
@@ -41,22 +42,22 @@ public class DispenseActionCreator {
         configurationGateway.getValidDenominations(this);
     }
 
-    public void onValidDenominationsFetched(Float[] validDenominations) {
+    public void onValidDenominationsFetched(BigDecimal[] validDenominations) {
         ValidDenominationsFetchedAction validDenominationsFetchedAction = new ValidDenominationsFetchedAction(validDenominations);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(validDenominationsFetchedAction));
     }
 
-    public void addPayment(Float denomination) {
+    public void addPayment(BigDecimal denomination) {
         AddPaymentAction addPaymentAction = new AddPaymentAction(denomination);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(addPaymentAction));
     }
 
-    public void calculateChange(ArrayList<Payment> payments, Float cost) {
+    public void calculateChange(ArrayList<Payment> payments, BigDecimal cost) {
         PaymentTransaction changeTransaction = new PaymentTransaction(payments);
         dispenseGateway.calculateChange(changeTransaction, cost, this);
     }
 
-    public void onChangeCalculated(HashMap<Float, Integer> change) {
+    public void onChangeCalculated(HashMap<BigDecimal, Integer> change) {
         ChangeCalculatedAction changeCalculatedAction = new ChangeCalculatedAction(change);
         dispatcher.dispatchAction(new DispenseStoreActionEvent(changeCalculatedAction));
     }

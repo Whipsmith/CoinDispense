@@ -1,5 +1,8 @@
 package za.co.opsmobile.coindispense.dispense.gateway;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Random;
 
 import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
@@ -14,13 +17,13 @@ public class RandomTransactionGateway implements TransactionGateway {
         dispenseActionCreator.onCostFetched(generateRandomCost());
     }
 
-    private float generateRandomCost() {
+    private BigDecimal generateRandomCost() {
         Random randomizer = new Random();
         int i = randomizer.nextInt(10000);
         if (i == 0) {
             i = 1;
         }
 
-        return .05f * i;
+        return new BigDecimal(.05f * i, new MathContext(2, RoundingMode.HALF_DOWN));
     }
 }

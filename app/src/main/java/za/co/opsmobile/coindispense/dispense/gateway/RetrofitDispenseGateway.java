@@ -2,6 +2,7 @@ package za.co.opsmobile.coindispense.dispense.gateway;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.math.BigDecimal;
 import java.util.concurrent.Executors;
 
 import retrofit.Call;
@@ -37,7 +38,7 @@ public class RetrofitDispenseGateway implements DispenseGateway {
 
 
     @Override
-    public void calculateChange(PaymentTransaction transaction, Float cost, final DispenseActionCreator dispenseActionCreator) {
+    public void calculateChange(PaymentTransaction transaction, BigDecimal cost, final DispenseActionCreator dispenseActionCreator) {
         CalculateChangeRequest request = new CalculateChangeRequest();
         request.setCost(cost);
         request.setPayment(transaction.getValue());

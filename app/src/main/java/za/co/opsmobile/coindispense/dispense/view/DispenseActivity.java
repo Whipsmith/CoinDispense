@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ public class DispenseActivity extends AppCompatActivity {
     private Dispatcher dispatcher;
     private PaymentOptionsAdapter paymentOptionsAdapter;
     private final DecimalFormat format = new DecimalFormat("R ##0.00");
-    private Float cost;
+    private BigDecimal cost;
     private ArrayList<Payment> payments;
 
 
@@ -59,7 +60,7 @@ public class DispenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dispense);
         ButterKnife.bind(this);
         initDependencies();
-        paymentOptionsAdapter = new PaymentOptionsAdapter(new ArrayList<Float>(), actionCreator);
+        paymentOptionsAdapter = new PaymentOptionsAdapter(new ArrayList<BigDecimal>(), actionCreator);
         paymentOptions.setAdapter(paymentOptionsAdapter);
     }
 
@@ -82,7 +83,7 @@ public class DispenseActivity extends AppCompatActivity {
             return;
         }
 
-        ArrayList<Float> validDenominations = model.getValidDenominations();
+        ArrayList<BigDecimal> validDenominations = model.getValidDenominations();
         if (validDenominations == null) {
             actionCreator.initialiseValidDenominations();
             return;
@@ -91,7 +92,7 @@ public class DispenseActivity extends AppCompatActivity {
         }
 
 
-        Float cost = model.getCost();
+        BigDecimal cost = model.getCost();
         if (cost == null) {
             actionCreator.fetchCost();
             return;
@@ -110,18 +111,18 @@ public class DispenseActivity extends AppCompatActivity {
         actionCreator.clearChange();
     }
 
-    private void setValidDenominations(ArrayList<Float> validDenominations) {
+    private void setValidDenominations(ArrayList<BigDecimal> validDenominations) {
         paymentOptionsAdapter.setPaymentOptions(validDenominations);
     }
 
-    private void setCost(Float cost) {
+    private void setCost(BigDecimal cost) {
         this.cost = cost;
         priceView.setText(format.format(cost));
     }
 
     private void setPayments(PaymentTransaction payments) {
         this.payments = payments.getPayments();
-        if (payments.getValue() >= cost) {
+        if (payments.getValue().compareTo(cost) >= 0) {
             payButton.setEnabled(true);
             paymentTotalView.setTextColor(getResources().getColor(R.color.green));
         } else {

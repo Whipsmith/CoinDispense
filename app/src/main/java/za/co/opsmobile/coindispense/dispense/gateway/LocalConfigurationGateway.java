@@ -1,5 +1,9 @@
 package za.co.opsmobile.coindispense.dispense.gateway;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
 
 /**
@@ -12,7 +16,19 @@ public class LocalConfigurationGateway implements ConfigurationGateway {
         dispenseActionCreator.onValidDenominationsFetched(getValidDenominations());
     }
 
-    private Float[] getValidDenominations() {
-        return new Float[]{.05f, .1f, .25f, .5f, 1f, 2f, 5f, 10f, 20f, 50f, 100f};
+    private BigDecimal[] getValidDenominations() {
+        return new BigDecimal[]{
+                new BigDecimal(100, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(50, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(20, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(10, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(5, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(2, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(1, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(.5, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(.25, new MathContext(3, RoundingMode.HALF_DOWN)),
+                new BigDecimal(.1, new MathContext(2, RoundingMode.HALF_DOWN)),
+                new BigDecimal(.05, new MathContext(1, RoundingMode.HALF_DOWN))
+        };
     }
 }

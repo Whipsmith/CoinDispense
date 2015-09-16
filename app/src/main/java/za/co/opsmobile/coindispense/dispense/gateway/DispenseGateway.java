@@ -1,5 +1,7 @@
 package za.co.opsmobile.coindispense.dispense.gateway;
 
+import java.math.BigDecimal;
+
 import za.co.opsmobile.coindispense.dispense.action.DispenseActionCreator;
 import za.co.opsmobile.coindispense.dispense.store.PaymentTransaction;
 
@@ -8,5 +10,5 @@ import za.co.opsmobile.coindispense.dispense.store.PaymentTransaction;
  */
 public interface DispenseGateway {
 
-    void calculateChange(PaymentTransaction transaction, Float cost, DispenseActionCreator dispenseActionCreator);
+    void calculateChange(PaymentTransaction transaction, BigDecimal cost, DispenseActionCreator dispenseActionCreator);
 }

@@ -1,5 +1,6 @@
 package za.co.opsmobile.coindispense.dispense.action;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import za.co.opsmobile.coindispense.dispense.store.DispenseStoreActions;
@@ -9,9 +10,9 @@ import za.co.opsmobile.coindispense.framework.action.StoreAction;
  * Created by Daniel Oosthuizen on 2015/09/06.
  */
 public class ValidDenominationsFetchedAction implements StoreAction<DispenseStoreActions> {
-    private final Float[] validDenominations;
+    private final BigDecimal[] validDenominations;
 
-    public ValidDenominationsFetchedAction(Float[] validDenominations) {
+    public ValidDenominationsFetchedAction(BigDecimal[] validDenominations) {
         this.validDenominations = validDenominations;
     }
 
