@@ -28,7 +28,7 @@ public class RetrofitDispenseGateway implements DispenseGateway {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .callbackExecutor(Executors.newSingleThreadExecutor())
-                .baseUrl(restUrl+"dispense/")
+                .baseUrl(restUrl+"rest/dispense/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

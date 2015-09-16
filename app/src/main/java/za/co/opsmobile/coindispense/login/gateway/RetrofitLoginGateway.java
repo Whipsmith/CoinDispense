@@ -4,18 +4,12 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.ResponseBody;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Converter;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 import za.co.opsmobile.coindispense.framework.logging.GatewayError;
@@ -36,7 +30,7 @@ public class RetrofitLoginGateway implements LoginGateway {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .callbackExecutor(Executors.newSingleThreadExecutor())
-                .addConverter(String.class, new StringConverter())
+                .addConverter(String.class, new EmptyConverter())
                 .baseUrl(restUrl)
                 .client(client)
                 .build();
@@ -75,7 +69,7 @@ public class RetrofitLoginGateway implements LoginGateway {
     }
 
 
-    static class StringConverter implements Converter {
+    static class EmptyConverter implements Converter {
 
         @Override
         public Object fromBody(ResponseBody body) throws IOException {
