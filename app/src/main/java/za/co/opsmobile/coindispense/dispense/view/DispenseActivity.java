@@ -107,6 +107,7 @@ public class DispenseActivity extends AppCompatActivity {
         Intent resultIntent = new Intent(this, DispenseResultActivity.class);
         resultIntent.putExtra(DispenseResultActivity.CHANGE_EXTRA_KEY, change);
         startActivity(resultIntent);
+        actionCreator.clearChange();
     }
 
     private void setValidDenominations(ArrayList<Float> validDenominations) {

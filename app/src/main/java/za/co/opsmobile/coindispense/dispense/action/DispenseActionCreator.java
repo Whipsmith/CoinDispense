@@ -64,4 +64,9 @@ public class DispenseActionCreator {
     public void sendError(CoinDispenseError error) {
         dispatcher.emitError(error);
     }
+
+    public void clearChange() {
+        ChangeCalculatedAction changeCalculatedAction = new ChangeCalculatedAction(null);
+        dispatcher.dispatchAction(new DispenseStoreActionEvent(changeCalculatedAction));
+    }
 }
