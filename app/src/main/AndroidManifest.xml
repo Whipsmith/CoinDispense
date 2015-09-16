@@ -11,15 +11,18 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".login.view.LoginActivity"
+            android:label="@string/title_activity_login">
+            <intent-filter>
+                <action android:name="android.intent.category.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".dispense.view.DispenseActivity"
             android:label="@string/title_activity_dispense">
-            <intent-filter>
-                <action android:name="ANDROID.INTENT.ACTION.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".dispense.view.DispenseResultActivity"

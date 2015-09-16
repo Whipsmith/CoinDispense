@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Created by Daniel Oosthuizen on 2015/09/13.
  */
 public class ChangeResult {
-    private final HashMap<Float, Integer> payments;
+    private HashMap<Float, Integer> payments;
 
     public ChangeResult() {
         payments = new HashMap<>();
@@ -14,6 +14,10 @@ public class ChangeResult {
 
     public HashMap<Float, Integer> getPayments() {
         return payments;
+    }
+
+    public void setPayments(HashMap<Float, Integer> payments) {
+        this.payments = payments;
     }
 
     public void addPayment(float payment) {

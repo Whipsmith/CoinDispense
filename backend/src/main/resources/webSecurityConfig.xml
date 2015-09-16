@@ -9,10 +9,10 @@
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
     <http use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
-        <intercept-url pattern="/dispense/**" access="isAuthenticated()" />
+        <intercept-url pattern="/dispense/**" access="hasRole('ROLE_USER')" />
 
         <sec:form-login authentication-success-handler-ref="mySuccessHandler" authentication-failure-handler-ref="myFailureHandler" />
-
+        <csrf disabled="true"/>
         <logout />
     </http>
 

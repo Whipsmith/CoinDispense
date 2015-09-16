@@ -1,6 +1,8 @@
 package za.co.opsmobile.coindispense.controller;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -21,8 +23,8 @@ public class DispenseController {
         return "pong";
     }
 
-    @RequestMapping("/calculateChange")
-    public ChangeResult calculateChange(CalculateChangeRequest calculateChangeRequest) {
+    @RequestMapping(value = "/calculateChange", method = RequestMethod.POST,headers="Accept=application/json")
+    public ChangeResult calculateChange(@RequestBody CalculateChangeRequest calculateChangeRequest) {
         float change = calculateChangeRequest.getCost() - calculateChangeRequest.getPayment();
         return calculateDispense(change);
     }

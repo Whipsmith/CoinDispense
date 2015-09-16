@@ -23,16 +23,14 @@ public class RetrofitDispenseGateway implements DispenseGateway {
     private final DispenseService dispenseService;
 
     public RetrofitDispenseGateway(String restUrl, final SecurityUtil securityUtil) {
-
-
-
         OkHttpClient client = new OkHttpClient();
         client.interceptors().add(securityUtil.getInterceptor());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .callbackExecutor(Executors.newSingleThreadExecutor())
-                .baseUrl(restUrl)
+                .baseUrl(restUrl+"dispense/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
         dispenseService = retrofit.create(DispenseService.class);
     }
@@ -48,7 +46,12 @@ public class RetrofitDispenseGateway implements DispenseGateway {
         changeResultCall.enqueue(new Callback<ChangeResult>() {
             @Override
             public void onResponse(Response<ChangeResult> response) {
-                dispenseActionCreator.onChangeCalculated(response.body().getPayments());
+                if (response.isSuccess()) {
+                    dispenseActionCreator.onChangeCalculated(response.body().getPayments());
+                } else {
+                    dispenseActionCreator.sendError(new DispenseGatewayError(response.message()));
+                }
+
             }
 
             @Override

@@ -6,6 +6,7 @@ import android.util.Log;
  * Created by Daniel Oosthuizen on 2015/09/06.
  */
 public class DefaultLogger implements CoinDispenseLogger {
+
     @Override
     public void oneEventAsync(CoinDispenseError error) {
         Log.d(error.getClass().getSimpleName(), getLogString(error));
